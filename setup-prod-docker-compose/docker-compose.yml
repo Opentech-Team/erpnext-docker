@@ -46,7 +46,14 @@ services:
       - --preload
       - frappe.app:application
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8000"]
+      test: [
+        "CMD",
+        "curl",
+        "--fail",
+        "-H",
+        "X-Frappe-Site-Name: ${DFP_DOMAIN_NAME}",
+        "http://0.0.0.0:8000/api/method/frappe.ping"
+      ]
       start_period: 15s
       interval: 30s
       timeout: 5s
@@ -58,7 +65,12 @@ services:
       - node
       - /home/frappe/frappe-bench/apps/frappe/socketio.js
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:9000"]
+      test: [
+        "CMD",
+        "curl",
+        "--fail",
+        "http://localhost:9000/socket.io/?EIO=4&transport=polling"
+        ]
       start_period: 15s
       interval: 30s
       timeout: 5s
