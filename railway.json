@@ -5,6 +5,7 @@
         "dockerfilePath": "/railway/Dockerfile"
     },
     "deploy": {
-        "numReplicas": 1
+        "numReplicas": 1,
+        "startCommand": "railway-cmd.sh"
     }
 }
