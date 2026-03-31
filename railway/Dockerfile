@@ -4,7 +4,7 @@
 
 # This image is also based on frappe/bench which we use for production
 # https://github.com/pipech/erpnext-docker-debian/blob/master/Dockerfile
-FROM pipech/erpnext-docker-debian:version-15-latest AS builder
+FROM pipech/erpnext-docker-debian:version-16-latest AS builder
 
 # These variable has been set from base image
 # $systemUser, $benchFolderName
@@ -17,6 +17,8 @@ RUN echo "-> Start builder" \
     ### [HOTFIX] Railway used IPv6 (Does not support IPv4),  https://docs.railway.com/guides/private-networking#caveats
     ### https://github.com/frappe/frappe/issues/33981
     && sed -i 's/socket\.AF_INET, socket\.SOCK_STREAM/socket.AF_INET6, socket.SOCK_STREAM/g' /home/frappe/bench/apps/frappe/frappe/utils/connections.py \
+    ### install Frappe CRM
+    && bench get-app https://github.com/frappe/crm \
     ### install your custom apps here
     # && bench get-app https://github.com/your-repo/custom_app
     && echo "-> Builder done!"
@@ -29,7 +31,7 @@ RUN echo "-> Start builder" \
 # Image version should also match with stage 01
 # (Check pipech/erpnext-docker-debian Dockerfile)
 # https://github.com/frappe/frappe_docker/blob/main/images/bench/Dockerfile
-FROM frappe/bench:v5.22.9
+FROM frappe/bench:v5.29.0
 
 # this env should match stage 01
 # (Check pipech/erpnext-docker-debian Dockerfile)
