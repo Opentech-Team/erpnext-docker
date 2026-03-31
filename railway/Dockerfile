@@ -14,9 +14,8 @@ WORKDIR /home/$systemUser/$benchFolderName
 RUN echo "-> Start builder" \
     ### remove unused sites, created by base image
     && rm -rf /home/$systemUser/$benchFolderName/sites/site1.local \
-    ### [HOTFIX] Railway used IPv6 (Does not support IPv4),  https://docs.railway.com/guides/private-networking#caveats
-    ### https://github.com/frappe/frappe/issues/33981
-    && sed -i 's/socket\.AF_INET, socket\.SOCK_STREAM/socket.AF_INET6, socket.SOCK_STREAM/g' /home/frappe/bench/apps/frappe/frappe/utils/connections.py \
+    ### [NOTE] IPv6 hotfix removed - it broke external SMTP connections (smtp.gmail.com)
+    ### Railway private networking works with IPv4 too, so this is not needed
     ### install Frappe CRM
     && bench get-app https://github.com/frappe/crm \
     ### install your custom apps here
